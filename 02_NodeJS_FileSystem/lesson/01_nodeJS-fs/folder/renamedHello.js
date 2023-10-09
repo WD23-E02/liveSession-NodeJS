@@ -1,0 +1,2 @@
+
+APIs are sets of rules and protocols that enable different software applications to communicate with each other. API management involves the governance, design, deployment, monitoring, and analysis of APIs to ensure they are secure, efficient, and meet business objectives. Components of API
