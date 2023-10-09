@@ -143,14 +143,30 @@ fs.chmod("main.js",0o467, (err)=>{  // -r--, rw- , rwx
 //Duplex − Stream which can be used for both read and write operation.
 //Transform − A type of duplex stream where the output is computed based on input.
 
-const readStream = fs.createReadStream("./folder/text.txt")
+/* const readStream = fs.createReadStream("./folder/text.txt")
 const writeStream = fs.createWriteStream("./folder/newFile.txt")
 
 readStream.pipe(writeStream)
-
+ */
 /* readStream.on("data",(data)=>{
     writeStream.write(data)
     console.log(data)
 }) */
 
+/* const folders=["./first/src","./second/public"]
 
+folders.forEach(folder=>{
+    fs.mkdir(folder,{recursive:true}, (err)=>{
+        console.log(err)
+    })
+}) */
+
+/* Array.from(["./first/src","./second/public"]).forEach(folder=>{
+    fs.mkdir(folder,{recursive:true}, (err)=>{
+        console.log(err)
+    })
+}) */
+
+/* fs.mkdir("./second", (err)=>{
+    console.log(err)
+}) */
