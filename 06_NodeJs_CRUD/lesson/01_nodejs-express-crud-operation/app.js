@@ -10,6 +10,18 @@ const server = express()
 //set our port
 const PORT = 4000;
 
+//express json middleware .. to parse incoming json data returns you in req.body
+
+server.use(express.json())
+ /* let body = ""
+     req.on("data",(chunk)=>{
+        body+=chunk   {"name": "Joseph", "age":26}
+    })
+    req.on("end",()=>{
+        req.body = JSON.parse(body)
+        console.log(req.body)
+    }) */
+
 //CRUD operation
 //create => POST
 //read => GET
@@ -30,6 +42,8 @@ const users = [
     {name:"Leon", age:24, id:2} 
 ]
 
+
+
 //GET "/users"
 server.get("/users", (req,res)=>{
     //request handler // controller
@@ -46,18 +60,42 @@ server.get("/users", (req,res)=>{
 
 //POST "/users"
 server.post("/users", (req,res)=>{
-    res.send("Received POST request on /users")
+    
+    users.push({...req.body, id:users.length+1})
+
+    res.send(users)
 })
 
-//PATCH "/users"
-server.patch("/users", (req,res)=>{
-    res.send("Received PATCH request on /users")
+//PATCH or //PUT "/users"
+//PUT request replace old resource/record with new one => replace user wwith id:2
+/* {
+    id:6,
+    name:"Leon",
+    age:23
+} */
+//PATCH request update existing resource/record
+/* {
+    id:2,
+    name:"Naqvi",
+    age:25
+} */
+//dynamic route
+server.patch("/users/:id", (req,res)=>{
+    console.log(req.params.id) // {id:"1"}
+    const user = users.find(item=>item.id=== Number(req.params.id))
+    user.name=req.body.name
+    res.send(users)
 })
+
 
 
 //DELETE "/users"
-server.delete("/users", (req,res)=>{
-    res.send("Received DELETE request on /users")
+server.delete("/users/:id", (req,res)=>{
+    console.log(req.params.id) 
+    const index = users.findIndex(item=>item.id === Number(req.params.id))
+    users.splice(index,1)
+
+    res.send(users)
 })
 
 
