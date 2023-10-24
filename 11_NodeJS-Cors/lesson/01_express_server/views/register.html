@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body>
+    <form > <!--method="POST" action="/register"  // url encoded data -->
+        <label>First Name: <input type="text" name="first"></label><br>
+        <label>Last Name: <input type="text" name="last"></label><br>
+        <label>Email: <input type="email" name="email"></label><br>
+        <label>Password: <input type="password" name="password"></label><br>
+        <button>register</button>
+    </form>
+    <script>
+        //sending json data
+        const form = document.querySelector("form")
+        form.addEventListener("submit", (e)=>{
+            e.preventDefault()
+            const user = {
+                firstName : e.target.first.value,
+                lastName: e.target.last.value,
+                email: e.target.email.value, 
+                password: e.target.password.value
+            }
+            fetch("/register" , {
+                method:"POST",
+                headers: {"Content-Type":"application/json"} , 
+                 body: JSON.stringify(user) 
+                })
+                .then(res=>res.json())
+                .then(result=>{
+                    console.log(result)
+                    window.location.href= "http://localhost:4000/login"
+                })
+
+        })
+    </script>
+</body>
+</html>
