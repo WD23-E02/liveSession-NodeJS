@@ -10,9 +10,9 @@ export const getAllCoffee = async (req, res) => {
 };
 export const createCoffee = async (req, res) => {
   try {
-    await Coffee.create(req.body);
+    const newCoffee = await Coffee.create(req.body);
 
-    res.send("the coffee is created ");
+    res.json({msg: "the coffee is created ", newCoffee});
   } catch (error) {
     console.log(error.message);
     res.send(error.message);
