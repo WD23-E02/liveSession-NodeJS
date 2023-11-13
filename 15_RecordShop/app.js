@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import morgan from "morgan";
 import usersRouter from "./routers/usersRouter.js";
+import recordsRouter from "./routers/recordsRouter.js";
 // creating express server
 
 const app = express();
@@ -26,7 +27,7 @@ app.use(morgan("tiny"));
 // localhost:8000/api/users
 app.use("/api/users", usersRouter);
 // localhost:8000/api/records
-// app.use("/api/records", recordsRouter)
+app.use("/api/records", recordsRouter)
 // localhost:8000/api/orders
 // app.use("/api/orders", ordersRouter)
 

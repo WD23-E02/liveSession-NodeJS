@@ -31,13 +31,36 @@ export const register = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      new :true
     });
 
+  
     res.status(203).send(user);
   } catch (error) {
     next(error);
   }
 };
-export const deleteUser = async (req, res, next) => {};
-export const getAllUsers = async (req, res, next) => {};
+export const deleteUser = async (req, res, next) => {
+  "/api/users/delete/awjg4qk3j4g24252j45kj24g5kj3"
+  try{
+    const userId=req.params.id;
+    const deleteUser = await User.findByIdAndDelete(userId)
+    res.send(deleteUser)
+  } 
+  catch(err){
+    next(err)
+  }
+};
+
+
+export const getAllUsers = async (req, res, next) => {
+  try{
+    //interaction with db is asynchronous
+    const allUsers =  await User.find() //  asynchronous
+    res.send(allUsers)  //  synchronous
+  } 
+  catch(err){
+   /*  res.status(500).send(err) */
+    next(err)
+  }
+};
