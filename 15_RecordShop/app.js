@@ -6,6 +6,7 @@ dotenv.config();
 import morgan from "morgan";
 import usersRouter from "./routers/usersRouter.js";
 import recordsRouter from "./routers/recordsRouter.js";
+import ordersRouter from "./routers/ordersRouter.js";
 // creating express server
 
 const app = express();
@@ -29,7 +30,7 @@ app.use("/api/users", usersRouter);
 // localhost:8000/api/records
 app.use("/api/records", recordsRouter)
 // localhost:8000/api/orders
-// app.use("/api/orders", ordersRouter)
+app.use("/api/orders", ordersRouter)
 
 // middleware to handle errors
 
