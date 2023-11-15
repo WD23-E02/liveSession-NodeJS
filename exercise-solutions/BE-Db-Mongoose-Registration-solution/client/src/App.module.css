@@ -1,0 +1,15 @@
+.container {
+    font-family: monospace;
+    color: darkred;
+}
+
+.container label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.container input, .container select {
+    display: block;
+    margin-left: 2vw;
+}
