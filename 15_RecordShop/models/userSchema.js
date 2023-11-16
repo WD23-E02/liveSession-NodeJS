@@ -5,6 +5,7 @@ const userSchema = new Schema({
   lastName: {type: String, required: true},
   email: {type: String, required: true, index: {unique: true}},
   password: {type: String, required: true},
+  // orders:[{type:Schema.Types.ObjectId , ref : 'Order'}]
   //   role: {type: String, enum: ["admin", "user"], default: "user"},
 });
 
