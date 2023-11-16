@@ -1,15 +1,26 @@
 import {Schema, model} from "mongoose";
 
 const OrderSchema = new Schema({
-  records: [{type: Schema.Types.ObjectId, ref: "Record"}],
+  records: [{type:Schema.Types.ObjectId, ref:"Record"}],
   totalPrice: {type: Number, required: true},
-  userId: {type: Schema.Types.ObjectId, ref: "User", required: true},
+  userId: {type: Schema.Types.ObjectId,ref:"User" ,required: true},
 });
 
 const OrderModel = model("Order", OrderSchema);
 
 export default OrderModel;
 
+//reference documents
+/* {
+    records: [
+      "hfaarq342352j53g2k3j5k2",  /api/records/getsinglerecords/hfaarq342352j53g2k3j5k2
+      "ekjrgewkjtgwetwet4352552" /api/records/getsinglerecords/hfaarq342352j53g2k3j5k2
+    ],
+    totalPrice: 1122,
+    userId:"6551e0934a04e2ec10cc1052" /api/users/getsignleuser/6551e0934a04e2ec10cc1052
+}  */
+
+// embedded documents
 /* {
     records: [
         { "title": "HP Pavilion 15-DK1056WM",
