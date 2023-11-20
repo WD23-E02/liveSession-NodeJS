@@ -1,4 +1,5 @@
 import OrderModel from "../models/orderSchema.js";
+import User from "../models/userSchema.js";
 export const getAllOrders = async (req, res, next) => {
   try {
     const allOrders = await OrderModel.find().populate("records", "title -_id");
@@ -36,7 +37,8 @@ export const getOrdersByUserId = async (req, res, next) => {
 export const createOrder = async (req, res, next) => {
   try {
          const order = await OrderModel.create(req.body);
-          res.send(order);
+         const updatedUser= await User.findByIdAndUpdate(req.user._id, {$push:{orders:order._id}},{new:true})
+          res.send(updatedUser);
 
   } catch (err) {
     next(err);
