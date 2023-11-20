@@ -11,6 +11,8 @@ import {
   userRegisterValidation,
   userValidationsTest,
 } from "../middleware/validation.js";
+import { auth } from "../middleware/authorization.js";
+import { isAdmin } from "../middleware/isAdmin.js";
 
 const router = Router();
 // "/api/users"
@@ -19,8 +21,8 @@ router.post("/register", userRegisterValidation, register);
 
 // router.post("/validation", userValidationsTest);
 
-router.patch("/update/:id", updateUser);
-router.delete("/delete/:id", deleteUser);
-router.get("/allUsers", getAllUsers);
+router.patch("/update/:id",auth,isAdmin, updateUser);
+router.delete("/delete/:id",auth,isAdmin,  deleteUser);
+router.get("/allUsers",auth, isAdmin, getAllUsers);
 
 export default router;

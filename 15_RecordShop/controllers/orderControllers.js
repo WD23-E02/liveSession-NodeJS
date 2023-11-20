@@ -1,5 +1,4 @@
 import OrderModel from "../models/orderSchema.js";
-
 export const getAllOrders = async (req, res, next) => {
   try {
     const allOrders = await OrderModel.find().populate("records", "title -_id");
@@ -36,8 +35,9 @@ export const getOrdersByUserId = async (req, res, next) => {
 
 export const createOrder = async (req, res, next) => {
   try {
-    const order = await OrderModel.create(req.body);
-    res.send(order);
+         const order = await OrderModel.create(req.body);
+          res.send(order);
+
   } catch (err) {
     next(err);
   }
