@@ -16,15 +16,16 @@ export default function Login() {
         .then(res=>{
         const token = res.headers.get("token")
         if(token){
+            //storing/writing token in localstorage
             localStorage.setItem("token",token) 
         }
         return res.json()
         })
         .then(result=>{
            if(result.success){
-            setUser(result.data)
-            navigate("/records")
-           }else{
+            setUser(result.data) // 2s
+            navigate("/profile") // 1s
+            }else{
             console.log(result.message)
            }
         })

@@ -11,7 +11,10 @@ export default function Container({children}) {
     useEffect(()=>{
         //on load 
         const token = localStorage.getItem("token")
-        
+        //read =>    localStorage.getItem(key)
+        //write =>   localStorage.setItem(key,value)
+        //remove item =>   localStorage.removeItem(key)
+        //clear =>   localStorage.clear()
         if(token){
             fetch("http://localhost:8000/api/users/verifytoken",{
                 method:"GET",
