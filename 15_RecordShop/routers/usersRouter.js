@@ -24,5 +24,8 @@ router.post("/register", userRegisterValidation, register);
 router.patch("/update/:id",auth,isAdmin, updateUser);
 router.delete("/delete/:id",auth,isAdmin,  deleteUser);
 router.get("/allUsers",auth, isAdmin, getAllUsers);
+router.get("/verifytoken", auth, (req,res)=>{
+  res.send({success:true, data:req.user})
+} )
 
 export default router;

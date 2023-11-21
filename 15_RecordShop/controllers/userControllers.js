@@ -29,21 +29,26 @@ export const login = async (req, res, next) => {
         const token = jwt.sign(
           {_id: foundUser._id, email: foundUser.email},
           process.env.SECRET_KEY,
-          {issuer: "Naqvi", expiresIn: "1h"}
+          {issuer: "Naqvi", expiresIn: "24h"}
         );
         console.log(token);
 
         //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTUzM2I2NzllMzZlMWUwNzRjNTc1Y2YiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk5OTU4NTYzLCJleHAiOjE2OTk5NjIxNjMsImlzcyI6Ik5hcXZpIn0.uAu44QFLVlRQNkHbgwYF9SPCRGQOQwvUO8Ho07Lo1Us
 
         /*       res.send({msg: "welcome back", foundUser, token}); */
-        res.header("token", token).send({msg: "welcome back", foundUser});
+        res.header("token", token).send({success:true, data: foundUser});
         /* res.cookie("token",token).send({msg: "welcome back", foundUser}); */
       } else {
-        res.status(401).send("password doesn't match!");
+        res.status(401).send({success:false, message:"password doesn't match!"});
+      
+      /*   res.send({success:false, message:"something wrong"})
+        res.send({success:true, data:user}) */
       }
+
     } else {
       // if there is no user found, then send this response
-      res.send("Make sure your email is correct!");
+      res.send({success:false, message:"Make sure your email is correct!"});
+      /* res.json("Make sure your email is correct!") */
     }
   } catch (error) {
     next(error);

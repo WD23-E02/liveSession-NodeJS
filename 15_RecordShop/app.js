@@ -1,6 +1,7 @@
 // import stuff you need
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors"
 import dotenv from "dotenv";
 dotenv.config();
 import morgan from "morgan";
@@ -24,6 +25,8 @@ mongoose
 // middleware morgan
 app.use(morgan("tiny"));
 
+// cors middleware
+app.use(cors({origin:"http://localhost:5173",exposedHeaders:["token"]}))
 // the routers (like middleware , to handle the request and send them to specific route )
 // localhost:8000/api/users
 app.use("/api/users", usersRouter);
