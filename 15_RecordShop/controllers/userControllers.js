@@ -1,6 +1,8 @@
 import User from "../models/userSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 //http is a stateless protocol
 //every request for server is unique
 export const login = async (req, res, next) => {
@@ -36,18 +38,19 @@ export const login = async (req, res, next) => {
         //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTUzM2I2NzllMzZlMWUwNzRjNTc1Y2YiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk5OTU4NTYzLCJleHAiOjE2OTk5NjIxNjMsImlzcyI6Ik5hcXZpIn0.uAu44QFLVlRQNkHbgwYF9SPCRGQOQwvUO8Ho07Lo1Us
 
         /*       res.send({msg: "welcome back", foundUser, token}); */
-        res.header("token", token).send({success:true, data: foundUser});
+        res.header("token", token).send({success: true, data: foundUser});
         /* res.cookie("token",token).send({msg: "welcome back", foundUser}); */
       } else {
-        res.status(401).send({success:false, message:"password doesn't match!"});
-      
-      /*   res.send({success:false, message:"something wrong"})
+        res
+          .status(401)
+          .send({success: false, message: "password doesn't match!"});
+
+        /*   res.send({success:false, message:"something wrong"})
         res.send({success:true, data:user}) */
       }
-
     } else {
       // if there is no user found, then send this response
-      res.send({success:false, message:"Make sure your email is correct!"});
+      res.send({success: false, message: "Make sure your email is correct!"});
       /* res.json("Make sure your email is correct!") */
     }
   } catch (error) {
@@ -67,9 +70,63 @@ export const register = async (req, res, next) => {
 
     const newUser = await User.create({...req.body, password: hashedPassword});
 
+    // create a random token and saved ,
+
+    const randomTokenCrypto = crypto.randomBytes(32).toString("hex");
+
+    newUser.randomToken = randomTokenCrypto;
+    newUser.save();
+    // create a verify link
+    const baseUrl = req.protocol + "://" + req.get("host");
+    const verifyLink = `${baseUrl}/api/users/verify/${newUser._id}/${newUser.randomToken}`;
+    // create a transporter object through nodemailer and gmail service
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: true,
+      auth: {
+        user: process.env.MYEMAIL,
+        pass: process.env.GMAILPASS,
+      },
+    });
+    //
+    await transporter.sendMail({
+      from: `"Fred Foo 👻" <alaani.hiba@gmail.com>`,
+      to: `${newUser.email}`,
+      subject: "Thanks for Joining our website",
+      text: "Hello there",
+      html: `<h1>click  <a href=${verifyLink}>here</a> to verify your email</h1>`,
+    });
+
     res.status(200).send(newUser);
   } catch (err) {
     next(err);
+  }
+};
+
+export const verifyUser = async (req, res, next) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      {_id: req.params.id, randomToken: req.params.randomToken},
+      {$unset: {randomToken: 1}, $set: {isVerify: true}},
+      {new: true}
+    );
+
+    if (user) {
+      res.status(200)
+        .send(`<div style="background-color:  #e6ffe6; padding: 10px; border-radius: 5px;">
+          <h3 style="color: green;">You have been successfully registered!</h3>
+          <p style="color: #333;">You can now proceed to login.</p>
+        </div>`);
+    } else {
+      res.send(`<div style="background-color: #e6ffe6; padding: 10px; border-radius: 5px;">
+          <h3 style="color: red;">You have error!</h3>
+         
+        </div>`);
+    }
+  } catch (error) {
+    next(error);
   }
 };
 
